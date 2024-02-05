@@ -1,0 +1,17 @@
+services:
+
+  webserver:
+    image: python:3.12.1
+    restart: always
+    ports:
+      - "8080"
+    working_dir: /usr/src/myapp
+    volumes:
+      - .:/usr/src/myapp
+    command: bash -c "python ./composetest/server.py"
+
+  simpleclient:
+    image: quay.io/curl/curl:latest
+    command: "curl -v webserver:8080 webserver:8080/httpbin"
+    depends_on:
+      - webserver
